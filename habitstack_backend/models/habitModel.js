@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 
 
 const habitSchema = new Schema({
-    catagory:{
+    category:{
         type:String,
         required:true,
     },
@@ -19,6 +19,10 @@ const habitSchema = new Schema({
     end:{
         type:String,
         required:true
+    },
+    marked:{
+        type:Boolean,
+        default:false
     },
     day:[String]
 },{timestamps:true})

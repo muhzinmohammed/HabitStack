@@ -1,10 +1,11 @@
 import React from "react";
 import del from "./resource/del.svg"
 import edit from "./resource/edit.svg"
+import marked from "./resource/marked.svg"
 import { useHabitContext } from "../hooks/useHabitContext";
 
-const Cards = (props) =>{
-    const {dispatch} = useHabitContext()
+const Cards = ({ index, ...props}) =>{
+    const {dispatch,current} = useHabitContext()
 
     const handleDelete = async () => {
         const response = await fetch('/habit/'+props._id,{
@@ -13,22 +14,15 @@ const Cards = (props) =>{
         const json = await response.json()
         if(response.ok)
         {
-            console.log("deleted")
+            console.log("habit deleted")
             dispatch({type: 'DELETE_HABIT',payload: json})
         }
     }
 
     const handleMarkAsDone = async () => {
-        const habitData = {
-            catagory: props.catagory,
-            name: props.habit,
-            start: props.start_time,
-            end: props.end_time,
-            day: props.days
-        }
         const response = await fetch('/habit/mark/'+props._id,{
             method:'POST',
-            body: JSON.stringify(habitData),
+            body: JSON.stringify({ marked: !props.marked }),
             headers: {
                 'Content-Type':'application/json'
             }
@@ -36,24 +30,33 @@ const Cards = (props) =>{
         const json = await response.json()
         if (response.ok)
         {
-            console.log("marked as done")
-            dispatch({type: 'MARK_AS_DONE',payload: json})
+            dispatch({type: 'SET_HABITS',payload: json})
         }
-        
+    }
+
+    const formatTime12Hour = (timeStr) => {
+        const [hourStr, minute] = timeStr.split(":");
+        let hour = parseInt(hourStr);
+        const ampm = hour < 12 ? "AM" : "PM";
+        hour = hour % 12 || 12; // convert 0 to 12
+        return `${hour}:${minute} ${ampm}`;
     }
     const daysArray = props.days
     return(
-        <div className="status">
-        <button onDoubleClick={handleMarkAsDone}>
+        <div className="status" onDoubleClick={handleMarkAsDone} style={{ animationDelay: `${index * 0.1}s`}}>
             <div className="default">
                 <div className="title">
-                    <h1>{props.catagory}</h1>
+                    <h1>{props.category}
+                        {props.marked && < img src={marked}/>}
+                    </h1>
                     <h2>{props.habit}</h2>
                 </div>
                 <div className="time">
                     <div className="start_time">
                         <h4>Starts At</h4>
-                        <h3>{props.start_time}<span>   AM</span></h3>
+                        <h3>
+                            {formatTime12Hour(props.start_time)}
+                        </h3>
                     </div>
                     <div className="end_time">
                         <h4>Ends At</h4>
@@ -73,7 +76,7 @@ const Cards = (props) =>{
             <div className="alter">
                 <div className="title">
                     <div className="alter_head">
-                        <h1>{props.catagory}</h1>
+                        <h1>{props.category}</h1>
                         <div className="alter_head_but">
                             <button><img src={edit}/></button>
                             <button onClick={handleDelete}><img src={del}/></button>
@@ -81,9 +84,8 @@ const Cards = (props) =>{
                     </div>
                         <h2>{props.habit}</h2>
                 </div>
-               <h3>Double click to mark as done</h3>
+               <h3>Double click to {props.marked ? 'unmark':'mark'} as done</h3>
             </div>
-        </button>
         </div>
     );
 };

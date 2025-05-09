@@ -5,42 +5,42 @@ import academics from "./resource/academics.svg";
 import productivity from "./resource/productivity.svg";
 import finance from "./resource/finance.svg";
 import hobbies from "./resource/hobbies.svg";
+import marked from "./resource/marked_black.svg"
 
 export const sidebarData = [
     {
         title: 'Dashboard',
         icon: dashboard,
-        link: "/"
+        type: 'Dashboard'
     },
     {
-        title: 'Fitness & Health',
+        title: 'Health',
         icon: health,
-        link: "/FitnessHealth"
+        type: 'Health'
     },
     {
         title: 'Academics',
         icon: academics,
-        link: "/Academics"
+        type: 'Academics'
     },
     {
         title: 'Productivity',
         icon: productivity,
-        link: "/Productivity"
-    },
+        type: 'Productivity'    },
     {
         title: 'Finance',
-        icon: finance,
-        link: "/Finance"
+        type: 'Finance',
+        icon: finance
     },
     {
         title: 'Hobbies',
-        icon: hobbies,
-        link: "/Hobbies"
+        type: 'Hobbies',
+        icon: hobbies
     },
     {
         title: 'Marked as done',
-        icon: hobbies,
-        link: "/marked"
+        type: 'Marked',
+        icon: marked,
     }
 ] 
 

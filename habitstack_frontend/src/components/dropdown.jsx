@@ -1,10 +1,10 @@
 import React from "react";
 
-const Dropdown = ({setCatagory}) => {
-    const options = ["","Fitness & Health","Academics","Productivity","Finance","Hobbies"];
+const Dropdown = ({setcategory}) => {
+    const options = ["","Health","Academics","Productivity","Finance","Hobbies"];
     return(
         <div className="drop">    
-            <select className="catagory" onChange={(e) => setCatagory(e.target.value)}>
+            <select className="category" onChange={(e) => setcategory(e.target.value)}>
                 {options.map((option,index) => (
                     <option key={index} value={option}>{option}</option>
                 ))}

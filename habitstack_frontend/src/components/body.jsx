@@ -5,25 +5,51 @@ import { useHabitContext } from '../hooks/useHabitContext';
 
 
 const Body = () => {
-    const {habits,dispatch} = useHabitContext()
-
+    const {habits,dispatch,current,searchValue} = useHabitContext()
     useEffect(() => {
-        const fetchHabits = async () => {
-          const response = await fetch('/habit')
-          const json = await response.json()
-    
-          if (response.ok){
-            dispatch({type:'SET_HABITS',payload: json})
-          }
+      const fetchHabits = async () => {
+        let url = '/habit'
+        if(searchValue){
+          url = `/habit/search/`+searchValue
         }
-        fetchHabits();
-      },[])
+        if (current === 'Marked'){
+          url = `/habit/marked?marked=true`
+        }
+        else if (current && current !== 'Dashboard' && current !== 'Marked'){
+          url = `/habit/category?category=${current}`
+        } 
+        console.log(url)
+        const response = await fetch(url)
+        const json = await response.json()
+        
+        if (response.ok){
+          dispatch({type:'SET_HABITS', payload: json})
+        }
+      }
+      fetchHabits();
+    },[current,dispatch])
+    console.log(current)
     return(
-        <div className='container'>
-        {habits && habits.map((habit) => {
+        <div className='container' >
+        {habits && habits.length>0? (habits.map((habit, index) => {
           return(
-          <Cards _id={habit._id} catagory={habit.catagory} habit={habit.name} start_time={habit.start} end_time={habit.end} days={habit.day}/>
-        )})}
+          <Cards 
+            key = {habit._id}
+            index = {index}
+            _id = {habit._id} 
+            category = {habit.category} 
+            habit = {habit.name} 
+            marked = {habit.marked}
+            start_time = {habit.start} 
+            end_time = {habit.end} 
+            days = {habit.day}
+          />
+        )})): 
+        <div className="empty_container">
+          <h1>No habits yet</h1>
+        </div> 
+        }
+
       </div>
     );
 }
