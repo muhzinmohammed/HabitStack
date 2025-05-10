@@ -14,7 +14,7 @@ const Cards = ({ index, ...props}) =>{
     const [name, setName] = useState(props.name)
     const [start, setStart] = useState(props.start)
     const [end, setEnd] = useState(props.end)
-    const [day, setDay] = useState(props.days1)
+    const [day, setDay] = useState(props.days)
     const [error, setError] = useState(null)
     const daysofWeek = ['M','T','W','Th','F','S','Su'];
     const daysArray = props.days
@@ -48,10 +48,22 @@ const Cards = ({ index, ...props}) =>{
         });
     }
 
+    function convertTimeToDate(timeStr) {
+        if (!timeStr) return null;
+        const [hours, minutes] = timeStr.split(":");
+        const date = new Date();
+        date.setHours(parseInt(hours));
+        date.setMinutes(parseInt(minutes));
+        date.setSeconds(0);
+        date.setMilliseconds(0);
+        return date;
+      }
+    
     const handleDone = async (e) => {
         e.preventDefault()
-        const habit = {category,name,start,end,day}
-
+        let start_time = convertTimeToDate(start)
+        let end_time = convertTimeToDate(end)
+        const habit = {category,name,start: start_time,end: end_time,day}
         const response = await fetch('/habit/edit/'+props._id,{
             method:'POST',
             body:JSON.stringify(habit),
@@ -87,11 +99,8 @@ const Cards = ({ index, ...props}) =>{
     }
         
     const formatTime12Hour = (timeStr) => {
-        const [hourStr, minute] = timeStr.split(":");
-        let hour = parseInt(hourStr);
-        const ampm = hour < 12 ? "AM" : "PM";
-        hour = hour % 12 || 12; // convert 0 to 12
-        return `${hour}:${minute} ${ampm}`;
+        const date = new Date(timeStr);
+        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
 
     return(
@@ -112,7 +121,7 @@ const Cards = ({ index, ...props}) =>{
                     </div>
                     <div className="end_time">
                         <h4>Ends At</h4>
-                        <h3>{props.end_time}<span>   AM</span></h3>
+                        <h3>{formatTime12Hour(props.end_time)}</h3>
                     </div>
                 </div>
                 <div className="card_end">

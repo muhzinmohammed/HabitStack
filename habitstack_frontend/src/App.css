@@ -6,17 +6,17 @@
   padding: 0;
   box-sizing: border-box;
 }
-.App{
+.main{
   display: grid;
   grid-template-columns: auto 1fr;
-  height: fit-content;
+  height: 100vh;
   background-color: #F5F7FA;
-  overflow-y: hidden;
+  margin-left: 250px;
 }
 .navbar{
   background-color: #ffffff;
   width: 100vw;
-  height: 60px;
+  height: 50px;
   position: fixed;
   border-bottom:1px solid rgba(207, 207, 207, 0.308);
   display: flex;
@@ -27,6 +27,7 @@
   margin: 10px 10px;
   width:calc(100% - 20px);
   height: 40px;
+  align-items: center;
   justify-content:space-between;
   position: absolute;
 }
@@ -35,6 +36,7 @@
   height: 100%;
   align-items: center;
   padding: 1px;
+  margin-bottom: 10px;
 }
 .logo button{
   background-color:transparent;
@@ -49,6 +51,7 @@
 .searchBar {
   display: flex;
   margin-right: 150px;
+  margin-bottom: 8px;
   align-items:end;
   justify-content: center;
 }
@@ -105,12 +108,13 @@
   box-sizing: border-box;
   width: 250px;
   height: 100vh; /* full viewport height */
-  position: static; /* make it fixed */
+  position: fixed; /* make it fixed */
   top: 0;
   left: 0;
   background-color: #ffffff;
   border-right: 1px solid rgba(207, 207, 207, 0.308);
   overflow-y: auto; /* scroll inside if content overflows */
+  z-index: 1;
 }
 
 
@@ -156,7 +160,7 @@ li{
   border: none;
   border-radius: 7px;
   margin-bottom: 20px;
-  background:linear-gradient(45deg,blue,violet);
+  background:linear-gradient(45deg,rgb(0, 38, 255),violet);
   font-size: 17px;
   color:#Ffffff;
   transition: 0.3s;
@@ -164,7 +168,7 @@ li{
 
 .status {
   all:unset;
-  background:linear-gradient(45deg,#4C49ED,#0A06F4,#00b7ff);
+  background:linear-gradient(45deg,#4C49ED,#237bff,hsl(194, 82%, 48%));
   color: #Ffffff;
   border-radius: 15px;
   padding: 15px;
@@ -174,6 +178,7 @@ li{
   opacity: 0;
   transform: translateX(300px);
   animation: fadeIn 0.8s ease-out forwards;
+  transition: background 0.3s ease, transform 0.3s ease;
 }
 
 @keyframes fadeIn {
@@ -231,8 +236,20 @@ li{
 }
 .status.editing .edit {
     display: block;
+    transform: scale(1.02);
+    animation: fadeInEdit 1s ease forwards;
 }
 
+@keyframes fadeInEdit {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 /* Hide edit by default */
 .status .edit {
     display: none;
@@ -251,6 +268,7 @@ li{
   transition: 0.3s;
 }
 .done_but button:hover{
+  color: rgb(151, 3, 3);
   transform: scale(1.08);
 }
 .edit_name input{

@@ -43,6 +43,16 @@ const Create = ({onClose}) =>{
     const [day, setDay] = useState([])
     const daysofWeek = ['M','T','W','Th','F','S','Su'];
 
+    function convertTimeToDate(timeStr) {
+        const [hours, minutes] = timeStr.split(":");
+        const date = new Date();
+        date.setHours(parseInt(hours));
+        date.setMinutes(parseInt(minutes));
+        date.setSeconds(0);
+        date.setMilliseconds(0);
+        return date;
+      }
+      
     setIsEdit(false)
     const handleDays = (e) => {
         const {name, checked} = e.target;
@@ -65,8 +75,9 @@ const Create = ({onClose}) =>{
     };
     const handleSubmit = async (e) => {
         e.preventDefault()
-
-        const habit = {category,name,start,end,day}
+        let start_time = convertTimeToDate(start)
+        let end_time = convertTimeToDate(end)
+        const habit = {category,name,start: start_time,end: end_time,day}
 
         const response = await fetch('/habit',{
             method:'POST',

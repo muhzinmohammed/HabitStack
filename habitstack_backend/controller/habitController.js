@@ -7,7 +7,8 @@ const createHabit = async (req,res) =>{
     console.log(req.body)
     try{
         const habit = await Habit.create({category,name,start,end,day} )
-        res.status(200).json(habit)
+        const habits = await Habit.find({marked: false}).sort({start: 1})
+        res.status(200).json(habits)
     }
     catch(error){
         res.status(400).json({error: error.message})
@@ -29,13 +30,13 @@ const deleteHabit = async (req,res) => {
 }
 
 const getHabit = async (req,res) =>{
-    const habits = await Habit.find({marked: false}).sort({start: -1})
+    const habits = await Habit.find({marked: false}).sort({start: 1})
     res.status(200).json(habits)
 }
 
 const getCategory = async (req,res) =>{
     const {category} = req.query
-    const habits = await Habit.find({category : category, marked:false}).sort({createdAt: -1})
+    const habits = await Habit.find({category : category, marked:false}).sort({start: 1})
     res.status(200).json(habits)
 }
 

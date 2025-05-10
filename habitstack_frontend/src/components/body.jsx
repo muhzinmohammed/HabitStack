@@ -1,6 +1,6 @@
 import React from "react";
 import Cards from './cards';
-import {useEffect, useState } from 'react';
+import {useEffect} from 'react';
 import { useHabitContext } from '../hooks/useHabitContext';
 
 

@@ -1,3 +1,4 @@
+import { act } from 'react'
 import {createContext,useReducer, useState} from 'react'
 
 export const HabitContext = createContext()
@@ -8,7 +9,7 @@ export const HabitReducer = (state,action) => {
             console.log(action.payload)
             return {habits : action.payload}
         case 'CREATE_HABITS':
-            return {habits: [action.payload, ...state.habits]}
+            return {habits: action.payload}
         case 'DELETE_HABIT':
             return {habits: state.habits.filter((w) => w._id !== action.payload._id)}
         default:

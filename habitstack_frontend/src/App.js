@@ -12,8 +12,8 @@ function App() {
       <Router>
         <div className="App" >
           <>
-            <Sidebar/>
             <Navbar/>
+            <Sidebar/>
               <div className='main'>
                 <Routes>
                   <Route path='/' element={<Body/>}/>
