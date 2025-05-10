@@ -1,11 +1,23 @@
 import React from "react";
+import { useState } from "react";
 import del from "./resource/del.svg"
 import edit from "./resource/edit.svg"
 import marked from "./resource/marked.svg"
+import Dropdown from "./dropdown";
 import { useHabitContext } from "../hooks/useHabitContext";
 
+
 const Cards = ({ index, ...props}) =>{
-    const {dispatch,current} = useHabitContext()
+
+    const {dispatch, setIsEdit, setEditingCardId} = useHabitContext()
+    const [category, setCategory] = useState(props.category)
+    const [name, setName] = useState(props.name)
+    const [start, setStart] = useState(props.start)
+    const [end, setEnd] = useState(props.end)
+    const [day, setDay] = useState(props.days1)
+    const [error, setError] = useState(null)
+    const daysofWeek = ['M','T','W','Th','F','S','Su'];
+    const daysArray = props.days
 
     const handleDelete = async () => {
         const response = await fetch('/habit/'+props._id,{
@@ -19,6 +31,46 @@ const Cards = ({ index, ...props}) =>{
         }
     }
 
+    const handleEdit = () => {
+        setEditingCardId(props._id)
+        setIsEdit(true)
+    }
+
+    const handleDays = (e) => {
+        const {name, checked} = e.target;
+        setDay(prev => {
+            if(checked){
+                return [...prev, name];
+            }
+            else{
+                return prev.filter(day => day !== name);
+            }
+        });
+    }
+
+    const handleDone = async (e) => {
+        e.preventDefault()
+        const habit = {category,name,start,end,day}
+
+        const response = await fetch('/habit/edit/'+props._id,{
+            method:'POST',
+            body:JSON.stringify(habit),
+            headers:{
+                'Content-Type':'application/json'
+            }
+        })
+
+        const json = await response.json()
+        if (!response.ok)
+        {
+            setError(json.error)
+        }
+        else{
+            setEditingCardId(null)
+            setIsEdit(false)
+            console.log("habit edited")
+        }
+    }
     const handleMarkAsDone = async () => {
         const response = await fetch('/habit/mark/'+props._id,{
             method:'POST',
@@ -29,11 +81,11 @@ const Cards = ({ index, ...props}) =>{
         })
         const json = await response.json()
         if (response.ok)
-        {
-            dispatch({type: 'SET_HABITS',payload: json})
-        }
+            {
+                dispatch({type: 'SET_HABITS',payload: json})
+            }
     }
-
+        
     const formatTime12Hour = (timeStr) => {
         const [hourStr, minute] = timeStr.split(":");
         let hour = parseInt(hourStr);
@@ -41,9 +93,9 @@ const Cards = ({ index, ...props}) =>{
         hour = hour % 12 || 12; // convert 0 to 12
         return `${hour}:${minute} ${ampm}`;
     }
-    const daysArray = props.days
+
     return(
-        <div className="status" onDoubleClick={handleMarkAsDone} style={{ animationDelay: `${index * 0.1}s`}}>
+        <div className={`status ${props.isEditing ? 'editing' : ''}`} onDoubleClick={handleMarkAsDone} style={{ animationDelay: `${index * 0.1}s`}}>
             <div className="default">
                 <div className="title">
                     <h1>{props.category}
@@ -78,7 +130,7 @@ const Cards = ({ index, ...props}) =>{
                     <div className="alter_head">
                         <h1>{props.category}</h1>
                         <div className="alter_head_but">
-                            <button><img src={edit}/></button>
+                            <button onClick={handleEdit}><img src={edit}/></button>
                             <button onClick={handleDelete}><img src={del}/></button>
                         </div>
                     </div>
@@ -86,6 +138,51 @@ const Cards = ({ index, ...props}) =>{
                 </div>
                <h3>Double click to {props.marked ? 'unmark':'mark'} as done</h3>
             </div>
+            {props.isEditing && (
+            <form className="edit" onSubmit={handleDone}>
+                <div className="title">
+                    <h1>
+                        <div className="edit_cat">
+                            <label>
+                                <Dropdown setcategory={setCategory}/>
+                            </label>
+                        </div>
+                        <div className="done_but">
+                            <button type="submit" >done</button>
+                        </div>
+                    </h1>
+                    <h2>
+                        <div className="edit_name">
+                            <label>
+                                <input type="text" onChange={(e) => setName(e.target.value)} value={name}/>
+                            </label>
+                        </div>
+                    </h2>
+                </div>
+                <div className="time">
+                    <div className="start_t">
+                        <label>
+                            Start time <input type="time" onChange={(e) => setStart(e.target.value)} value={start}/>
+                        </label>
+                    </div>
+                    <div className="end_t">
+                        <label>
+                            End time <input type="time" onChange={(e) => setEnd(e.target.value)} value={end}/>
+                        </label>
+                    </div>
+                </div>
+                <div className="card_end">
+                    <div className="edit_day">
+                        {daysofWeek.map((day) => (
+                            <label key={day}>
+                                <input type="checkbox" onChange={handleDays} name={day} id={day}/>
+                                <span>{day}</span>
+                            </label>
+                        ))}
+                    </div>
+                </div>
+            </form>
+            )}
         </div>
     );
 };

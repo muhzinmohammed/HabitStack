@@ -11,6 +11,7 @@
   grid-template-columns: auto 1fr;
   height: fit-content;
   background-color: #F5F7FA;
+  overflow-y: hidden;
 }
 .navbar{
   background-color: #ffffff;
@@ -218,6 +219,103 @@ li{
 .status:hover .alter{
   display: block;
 }
+/*new*/
+
+
+.status.editing .default,
+.status.editing .alter {
+    display: none !important;
+}
+.status.editing{
+  background:rgb(255, 211, 15);
+}
+.status.editing .edit {
+    display: block;
+}
+
+/* Hide edit by default */
+.status .edit {
+    display: none;
+}
+
+.done_but{
+  display: flex;
+  justify-content: end;
+}
+.done_but button{
+  padding: 0px;
+  background: none;
+  color: white;
+  font-size: 16px;
+  border: none;
+  transition: 0.3s;
+}
+.done_but button:hover{
+  transform: scale(1.08);
+}
+.edit_name input{
+  background-color: transparent;
+  outline: none;
+  border: none;
+  border-bottom:1px solid white ;
+  color: rgb(255, 136, 39);;
+  margin-left: 0px;
+  width: 200px;
+  margin-top: 5px;
+  font-size: 20px;
+  font-weight: 200;
+}
+.time input{
+  background-color: transparent;
+  outline: none;
+  border: none;
+  border-bottom:1px solid white ;
+  color: white;
+}
+
+.edit_day {
+  display: flex;
+  gap: 7px;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.edit_day label {
+  display: flex;
+  cursor: pointer;
+}
+
+.edit_day input {
+  display: none;
+}
+
+.edit_day span {
+  display: flex;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-size: 20px;
+  justify-content: center;
+  align-items: center;
+  transition: 0.2s;
+  border: 1px solid white;
+  color: white;
+}
+
+.edit_day input:checked + span {
+  background: rgb(255, 136, 39);
+  border: none;
+  color: white;
+}
+
+.edit_day label:hover span {
+  background: rgb(255, 136, 39);
+  color: white;
+  transform: scale(1.1);
+  border: none;
+}
+
+/*new*/
 .title h1{
   display: flex;
   justify-content: space-between;
@@ -331,6 +429,23 @@ li{
   font-weight:200;
   color: blue;
   padding-left: 10px;
+}
+.drop.editing .category{
+  display:flex;
+  border:none;
+  border-bottom: 1px solid rgb(255, 255, 255);
+  background: none;
+  width: 220px;
+  font-size: 25px;
+  font-family:'Lato';
+  font-weight: 400;
+  color: rgb(255, 255, 255);
+  padding-left: 0px;
+  outline: none;
+  background-color: transparent;
+}
+.drop.editing .category:focus{
+  color: rgb(255, 136, 39);
 }
 .create_hab label{
   margin:25px 0px ;

@@ -31,9 +31,10 @@ const Create = ({onClose}) =>{
     };
 
     const handleClose = () => {
+        setIsEdit(true)
         onClose();
     }
-    const {dispatch,setCurrent} = useHabitContext()
+    const {dispatch,setCurrent,setIsEdit} = useHabitContext()
     const [category, setCategory] = useState('')
     const [name, setName] = useState('')
     const [start, setStart] = useState('')
@@ -42,6 +43,7 @@ const Create = ({onClose}) =>{
     const [day, setDay] = useState([])
     const daysofWeek = ['M','T','W','Th','F','S','Su'];
 
+    setIsEdit(false)
     const handleDays = (e) => {
         const {name, checked} = e.target;
         setDay(prev => {

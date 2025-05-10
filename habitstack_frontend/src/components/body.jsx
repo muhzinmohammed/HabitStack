@@ -1,17 +1,15 @@
 import React from "react";
 import Cards from './cards';
-import {useEffect } from 'react';
+import {useEffect, useState } from 'react';
 import { useHabitContext } from '../hooks/useHabitContext';
 
 
 const Body = () => {
-    const {habits,dispatch,current,searchValue} = useHabitContext()
+    const {habits,dispatch,current,editingCardId} = useHabitContext()
+
     useEffect(() => {
       const fetchHabits = async () => {
         let url = '/habit'
-        if(searchValue){
-          url = `/habit/search/`+searchValue
-        }
         if (current === 'Marked'){
           url = `/habit/marked?marked=true`
         }
@@ -19,6 +17,7 @@ const Body = () => {
           url = `/habit/category?category=${current}`
         } 
         console.log(url)
+        console.log(editingCardId)
         const response = await fetch(url)
         const json = await response.json()
         
@@ -27,7 +26,7 @@ const Body = () => {
         }
       }
       fetchHabits();
-    },[current,dispatch])
+    },[current,editingCardId,dispatch])
     console.log(current)
     return(
         <div className='container' >
@@ -37,6 +36,7 @@ const Body = () => {
             key = {habit._id}
             index = {index}
             _id = {habit._id} 
+            isEditing={editingCardId === habit._id}
             category = {habit.category} 
             habit = {habit.name} 
             marked = {habit.marked}

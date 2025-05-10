@@ -11,10 +11,6 @@ export const HabitReducer = (state,action) => {
             return {habits: [action.payload, ...state.habits]}
         case 'DELETE_HABIT':
             return {habits: state.habits.filter((w) => w._id !== action.payload._id)}
-        case 'MARK_AS_DONE':
-            return {habits: state.habits.filter((w) => w.marked === true)}
-        case 'DELETE_MARKEDHABIT':
-            return {habits: state.habits.filter((w) => w._id !== action.payload._id)}
         default:
             return state
     }
@@ -23,9 +19,20 @@ export const HabitReducer = (state,action) => {
 export const HabitContextProvider = ({children}) => {
     const [state,dispatch] = useReducer(HabitReducer,{habits:[]})
     const [current, setCurrent] = useState("Dashboard")
-    const[searchValue,setSearchValue] = useState()
+    const [isEdit, setIsEdit] = useState(false)
+    const [editingCardId, setEditingCardId] = useState(null)
     return(
-        <HabitContext.Provider value={{...state,dispatch,setCurrent,current,searchValue,setSearchValue}}>
+        <HabitContext.Provider value={
+            {
+                ...state,
+                dispatch,
+                setCurrent,
+                current,
+                setIsEdit,
+                isEdit,
+                setEditingCardId,
+                editingCardId
+            }}>
             {children}
         </HabitContext.Provider>
     );

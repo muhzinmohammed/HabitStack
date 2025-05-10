@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "./resource/logo.svg";
 import icon from "./resource/settings_icon.svg";
 import user from "./resource/user.svg";
@@ -6,8 +6,22 @@ import search from "./resource/search.svg"
 import { useHabitContext } from "../hooks/useHabitContext";
 const Navbar = () =>{
 
-    const {setSearchValue,setCurrent} = useHabitContext()
-
+    const {setCurrent,dispatch} = useHabitContext()
+    const[searchValue,setSearchValue] = useState("")
+    useEffect(() => {
+        const fetchHabits = async () => {
+            let url = '/habit'
+            if(searchValue !== ""){
+                url = "/habit/search/"+searchValue
+            }
+            const response = await fetch(url)
+            const json = await response.json()
+            if (response.ok){
+              dispatch({type:'SET_HABITS', payload: json})
+            }
+          }
+          fetchHabits();
+        },[searchValue])
     return(
         <div className="navbar" >
             <div className="contents">
@@ -27,7 +41,7 @@ const Navbar = () =>{
                         <input 
                         type="search" 
                         className="search" 
-                        placeholder="Search Habit"
+                        placeholder="Search by Habit or Category"
                         onChange={(e) => setSearchValue(e.target.value)}
                         />
                     </div>

@@ -2,6 +2,18 @@ const { default: mongoose } = require('mongoose')
 const Habit = require('../models/habitModel')
 
 
+const createHabit = async (req,res) =>{
+    const {category,name,start,end,day} = req.body
+    console.log(req.body)
+    try{
+        const habit = await Habit.create({category,name,start,end,day} )
+        res.status(200).json(habit)
+    }
+    catch(error){
+        res.status(400).json({error: error.message})
+    }
+}
+
 const deleteHabit = async (req,res) => {
     const {id} = req.params
     if (!mongoose.Types.ObjectId.isValid(id)){
@@ -13,19 +25,7 @@ const deleteHabit = async (req,res) => {
     if(!habit){
         return res.status(404).json({error:"habit does not exist"})
     }
-
     res.status(200).json(habit)
-}
-const createHabit = async (req,res) =>{
-    const {category,name,start,end,day} = req.body
-    console.log(req.body)
-    try{
-        const habit = await Habit.create({category,name,start,end,day} )
-        res.status(200).json(habit)
-    }
-    catch(error){
-        res.status(400).json({error: error.message})
-    }
 }
 
 const getHabit = async (req,res) =>{
@@ -46,13 +46,18 @@ const getMarked = async (req,res) =>{
 }
 
 const getSearch = async (req,res) =>{
-    const {id} = req.params
-    const habits = await Habit.find({
-        $or: [
-            {name: {$regex: id, $options: 'i'}},
-            {category: {$regex: id, $options: 'i'}}
-        ]}).sort({createdAt: -1})
-    res.status(200).json(habits)
+    const {searchValue} = req.params
+    try {
+        const habits = await Habit.find(
+            {$or: [
+                {name: { $regex: '^'+searchValue, $options: 'i' }},
+                {category: { $regex: '^'+searchValue, $options: 'i' }}
+            ]});
+
+        res.status(200).json(habits);
+    } catch (err) {
+        res.status(500).json({ error: 'Server error' });
+    }
 }
 
 const markHabitAsDone = async (req,res) =>{
@@ -70,6 +75,21 @@ const markHabitAsDone = async (req,res) =>{
     res.status(200).json(habits)
 }
 
+const editHabit = async (req,res) =>{
+    const {id} = req.params
+    const {category,name,start,end,day} = req.body
+    console.log("edited")
+    if (!mongoose.Types.ObjectId.isValid(id)){
+        return res.status(404).json({error: "habit does not exist"})
+    }
+    const habit = await Habit.findByIdAndUpdate({_id: id},{category:category, name:name, start:start, end:end, day:day})
+    if(!habit){
+        return res.status(404).json({error:"habit does not exist"})
+    }
+
+    res.status(200).json(habit)
+}
+
 module.exports = {
     createHabit,
     getHabit,
@@ -77,5 +97,6 @@ module.exports = {
     getMarked,
     getSearch,
     deleteHabit,
+    editHabit,
     markHabitAsDone
 }
