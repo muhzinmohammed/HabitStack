@@ -1,6 +1,17 @@
 const express = require('express')
 const router = express.Router()
-const {createHabit,getHabit,getCategory,getMarked,getSearch,deleteHabit,markHabitAsDone,editHabit} = require('../controller/habitController')
+const {
+    createHabit,
+    getHabit,
+    getCategory,
+    getMarked,
+    getSearch,
+    deleteHabit,
+    markHabitAsDone,
+    editHabit,
+    getCount,
+    getTodayCount,
+    getMarkedCount} = require('../controller/habitController')
 
 
 // router.post('/',createHabit)
@@ -12,4 +23,8 @@ router.get('/search/:searchValue',getSearch)
 router.delete('/:id',deleteHabit)
 router.post('/mark/:id',markHabitAsDone)
 router.post('/edit/:id',editHabit)
+router.get('/count',getCount)
+router.get('/count/today',getTodayCount)
+router.get('/count/marked',getMarkedCount)
+
 module.exports = router

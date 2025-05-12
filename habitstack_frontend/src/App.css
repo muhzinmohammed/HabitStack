@@ -1,5 +1,8 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
 
 *{
   margin: 0;
@@ -9,9 +12,9 @@
 .main{
   display: grid;
   grid-template-columns: auto 1fr;
-  height: 100vh;
-  background-color: #F5F7FA;
   margin-left: 250px;
+  min-height: 100vh;
+  background-color: #F5F7FA;
 }
 .navbar{
   background-color: #ffffff;
@@ -32,6 +35,8 @@
   position: absolute;
 }
 .logo{
+  font-family: "Playfair Display", serif;
+  font-size: 16px;
   display: flex;
   height: 100%;
   align-items: center;
@@ -376,9 +381,49 @@ li{
   display: flex;
 }
 
+.main_container{
+  display: block;
+  margin-top: 85px;
+
+}
+.welcome_container{
+  display: flex;
+  justify-content: space-between;
+}
+.welcome{
+  margin-left: 20px;
+}
+.welcome h1{
+  font-family: "Playfair Display", serif;
+  font-size: 50px;
+}
+.welcome h2{
+  font-family: "Pt Serif", serif;
+  font-size: 30px;
+}
+.streak{
+  border: 1px solid rgb(151, 151, 255);
+  color: rgb(255, 131, 74);
+  border-radius: 20px;
+  font-family: "Pt Serif", serif;
+  margin-right: 20px;
+  padding: 10px;
+  height: 50px;
+}
+.streak span{
+  color:#0193b8
+}
+.analytics{
+  display: flex;
+  margin: 50px;
+  flex-wrap: wrap;
+  gap: 50px;
+}
+.bar{
+  height: 300px;
+}
 .container{
   display: flex;
-  margin-top: 85px;
   flex-wrap: wrap;
 }
 

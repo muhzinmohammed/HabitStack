@@ -30,7 +30,10 @@ const deleteHabit = async (req,res) => {
 }
 
 const getHabit = async (req,res) =>{
-    const habits = await Habit.find({marked: false}).sort({start: 1})
+    const now = new Date();
+    const days = ["Su", "M", "T", "W", "Th", "F", "S"];
+    const today = days[now.getDay()];
+    const habits = await Habit.find({marked: false, day: today}).sort({start: 1})
     res.status(200).json(habits)
 }
 
@@ -91,6 +94,98 @@ const editHabit = async (req,res) =>{
     res.status(200).json(habit)
 }
 
+const getCount = async (req, res) => {
+    const allCategories = ['Finance', 'Health', 'Academics', 'Hobbies','Productivity', 'Fitness'];
+     try {
+      const categoryCounts = await Habit.aggregate([
+        {
+          $group: {
+            _id: "$category",
+            count: { $sum: 1 }
+          }
+        }
+      ]);
+
+      const categoryCountMap = categoryCounts.reduce((acc, { _id, count }) => {
+        acc[_id] = count;
+        return acc;
+      }, {});
+  
+      const result = allCategories.map(category => ({
+        category,
+        count: categoryCountMap[category] || 0
+      }));
+
+      console.log(result)
+      res.status(200).json(result); // Send result to frontend
+    } catch (error) {
+      console.error("Error fetching category counts:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+const getTodayCount = async (req, res) => {
+    const now = new Date();
+    const days = ["Su", "M", "T", "W", "Th", "F", "S"];
+    const today = days[now.getDay()];
+    const allCategories = ['Finance', 'Health', 'Academics', 'Hobbies','Productivity', 'Fitness'];
+     try {
+      const categoryCounts = await Habit.aggregate([
+        {$match: {day: today}},
+        {
+          $group: {
+            _id: "$category",
+            count: { $sum: 1 }
+          }
+        }
+      ]);
+
+      const categoryCountMap = categoryCounts.reduce((acc, { _id, count }) => {
+        acc[_id] = count;
+        return acc;
+      }, {});
+  
+      const result = allCategories.map(category => ({
+        category,
+        count: categoryCountMap[category] || 0
+      }));
+
+      console.log(result)
+      res.status(200).json(result); // Send result to frontend
+    } catch (error) {
+      console.error("Error fetching category counts:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+};
+const getMarkedCount = async (req, res) => {
+    const allCategories = ['Finance', 'Health', 'Academics', 'Hobbies','Productivity', 'Fitness'];
+    try {
+      const categoryCounts = await Habit.aggregate([
+        {$match: {marked: true}},
+        {
+          $group: {
+            _id: "$category",
+            count: { $sum: 1 }
+          }
+        }
+      ]);
+      const categoryCountMap = categoryCounts.reduce((acc, { _id, count }) => {
+        acc[_id] = count;
+        return acc;
+      }, {});
+  
+      const result = allCategories.map(category => ({
+        category,
+        count: categoryCountMap[category] || 0
+      }));
+      console.log(result)
+      res.status(200).json(result); // Send result to frontend
+    } catch (error) {
+      console.error("Error fetching category counts:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+};
+
 module.exports = {
     createHabit,
     getHabit,
@@ -99,5 +194,8 @@ module.exports = {
     getSearch,
     deleteHabit,
     editHabit,
-    markHabitAsDone
+    markHabitAsDone,
+    getCount,
+    getTodayCount,
+    getMarkedCount
 }
