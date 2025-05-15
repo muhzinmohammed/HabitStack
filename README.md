@@ -10,10 +10,16 @@
 - ✏️ **Edit** habits inline with category, name, time, and days
 - 🔍 **Search** by habit name or category (starts with match)
 - 🎨 Intuitive and animated card-based UI
-- 📦 Fully built with React + Express + MongoDB
+- 📊 **Analytics Dashboard** with habit statistics and streaks
+- 🎯 **Category-based Organization** (Health, Academics, Productivity, Finance, Hobbies)
+- 📱 **Responsive Design** with modern UI components
+- 🔄 **Real-time Updates** for habit status changes
+- 📈 **Habit Streak Tracking** to monitor consistency
+- 🎯 **Today's Habits View** for quick access to daily tasks
+- 📱 **Draggable UI Components** for better user experience
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: React, CSS Modules
+- **Frontend**: React, Chart.js, CSS Modules
 - **Backend**: Node.js, Express
 - **Database**: MongoDB
