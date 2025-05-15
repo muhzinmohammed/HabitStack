@@ -6,12 +6,17 @@ import productivity from "./resource/productivity.svg";
 import finance from "./resource/finance.svg";
 import hobbies from "./resource/hobbies.svg";
 import marked from "./resource/marked_black.svg"
-
+import Habits from "./resource/Habits.svg"
 export const sidebarData = [
     {
         title: 'Dashboard',
         icon: dashboard,
         type: 'Dashboard'
+    },
+    {
+        title: 'All Habits',
+        icon: Habits,
+        type: 'Habits'
     },
     {
         title: 'Health',

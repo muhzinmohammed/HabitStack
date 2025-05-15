@@ -9,24 +9,24 @@ const BarGraph = (props) => {
         labels: props.category,
         datasets: [{
             label: " ",
-            barThickness: 20,
+            barThickness: 15,
+            CategoryScale: 100,
             backgroundColor: [
-                "rgb(83, 172, 255,0.2)",
-                "rgb(255, 200, 83,0.2)",
-                "rgb(0, 0, 0,0.2)",
-                "rgb(113, 255, 120,0.2)",
-                "rgb(83, 172, 255,0.2)"
+                "#DD614A",
+                "#1E555C",
+                "#FF6B6B",
+                "#73A580",
+                "#F15152"
             ],
-            borderColor: ["rgb(83, 172, 255)"],
-            borderColor: ["rgb(113, 255, 120)"],
             borderWidth: 1,
             borderRadius:6,
             data: props.count
         }] 
     }
     const option = {
+        indexAxis: 'y',
         scales: {
-            y: {
+            x: {
                 ticks: {
                     stepSize: 1
                 },
@@ -41,7 +41,7 @@ const BarGraph = (props) => {
     };
   return (
     <div className='bar'>
-      <Bar data = {BarData} options={option} width = {300} height = {200}/>
+      <Bar data = {BarData} options={option} width = {310} height = {180}/>
     </div>
   )
 }

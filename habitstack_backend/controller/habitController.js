@@ -33,6 +33,14 @@ const getHabit = async (req,res) =>{
     const now = new Date();
     const days = ["Su", "M", "T", "W", "Th", "F", "S"];
     const today = days[now.getDay()];
+    const habits = await Habit.find({marked: false}).sort({start: 1})
+    res.status(200).json(habits)
+}
+
+const getHabitDashboard = async (req,res) =>{
+    const now = new Date();
+    const days = ["Su", "M", "T", "W", "Th", "F", "S"];
+    const today = days[now.getDay()];
     const habits = await Habit.find({marked: false, day: today}).sort({start: 1})
     res.status(200).json(habits)
 }
@@ -95,7 +103,7 @@ const editHabit = async (req,res) =>{
 }
 
 const getCount = async (req, res) => {
-    const allCategories = ['Finance', 'Health', 'Academics', 'Hobbies','Productivity', 'Fitness'];
+    const allCategories = ['Finance', 'Health', 'Academics', 'Hobbies','Productivity'];
      try {
       const categoryCounts = await Habit.aggregate([
         {
@@ -128,7 +136,7 @@ const getTodayCount = async (req, res) => {
     const now = new Date();
     const days = ["Su", "M", "T", "W", "Th", "F", "S"];
     const today = days[now.getDay()];
-    const allCategories = ['Finance', 'Health', 'Academics', 'Hobbies','Productivity', 'Fitness'];
+    const allCategories = ['Finance', 'Health', 'Academics', 'Hobbies','Productivity'];
      try {
       const categoryCounts = await Habit.aggregate([
         {$match: {day: today}},
@@ -158,7 +166,7 @@ const getTodayCount = async (req, res) => {
     }
 };
 const getMarkedCount = async (req, res) => {
-    const allCategories = ['Finance', 'Health', 'Academics', 'Hobbies','Productivity', 'Fitness'];
+    const allCategories = ['Finance', 'Health', 'Academics', 'Hobbies','Productivity'];
     try {
       const categoryCounts = await Habit.aggregate([
         {$match: {marked: true}},
@@ -189,6 +197,7 @@ const getMarkedCount = async (req, res) => {
 module.exports = {
     createHabit,
     getHabit,
+    getHabitDashboard,
     getCategory,
     getMarked,
     getSearch,

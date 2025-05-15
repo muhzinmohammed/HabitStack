@@ -3,6 +3,7 @@ const router = express.Router()
 const {
     createHabit,
     getHabit,
+    getHabitDashboard,
     getCategory,
     getMarked,
     getSearch,
@@ -16,6 +17,7 @@ const {
 
 // router.post('/',createHabit)
 router.get('/',getHabit)
+router.get('/dashboard',getHabitDashboard)
 router.post('/',createHabit)
 router.get('/category',getCategory)
 router.get('/marked',getMarked)

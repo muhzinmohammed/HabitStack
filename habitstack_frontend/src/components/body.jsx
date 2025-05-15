@@ -11,10 +11,13 @@ const Body = () => {
     useEffect(() => {
       const fetchHabits = async () => {
         let url = '/habit'
+        if (current === 'Dashboard'){
+          url = `/habit/dashboard`
+        }
         if (current === 'Marked'){
           url = `/habit/marked?marked=true`
         }
-        else if (current && current !== 'Dashboard' && current !== 'Marked'){
+        else if (current && current !== 'Dashboard' && current !== 'Marked' && current !== 'Habits'){
           url = `/habit/category?category=${current}`
         } 
         console.log(url)
@@ -41,6 +44,7 @@ const Body = () => {
               <div className="streak"><h3>Habit Streak: <span>10</span>🔥</h3></div>
             </div>
             <Analytics/>
+            <div className="welcome"><h2>Habits for the day...</h2></div>
           </div>)}
           <div className='container'>
             {habits.length>0? (habits.map((habit, index) => {
