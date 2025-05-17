@@ -22,6 +22,7 @@ export const HabitContextProvider = ({children}) => {
     const [current, setCurrent] = useState("Dashboard")
     const [isEdit, setIsEdit] = useState(false)
     const [editingCardId, setEditingCardId] = useState(null)
+    const [name,setName] = useState()
     return(
         <HabitContext.Provider value={
             {
@@ -32,7 +33,9 @@ export const HabitContextProvider = ({children}) => {
                 setIsEdit,
                 isEdit,
                 setEditingCardId,
-                editingCardId
+                editingCardId,
+                setName,
+                name
             }}>
             {children}
         </HabitContext.Provider>

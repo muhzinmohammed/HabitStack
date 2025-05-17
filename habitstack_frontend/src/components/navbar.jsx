@@ -4,10 +4,19 @@ import icon from "./resource/settings_icon.svg";
 import user from "./resource/user.svg";
 import search from "./resource/search.svg"
 import { useHabitContext } from "../hooks/useHabitContext";
+import { googleLogout } from "@react-oauth/google";
+import { Navigate, useNavigate } from "react-router-dom";
+
 const Navbar = () =>{
 
     const {setCurrent,dispatch} = useHabitContext()
     const[searchValue,setSearchValue] = useState("")
+    const navigate = useNavigate()
+    const handleLogout = () => {
+        googleLogout()
+        navigate("/login")
+      };
+
     useEffect(() => {
         const fetchHabits = async () => {
             let url = '/habit'
@@ -47,6 +56,11 @@ const Navbar = () =>{
                     </div>
                 </div>
                 <div className="utility">
+                    <div className="logout">
+                        <button onClick={() => {handleLogout()}}>
+                            Log out
+                        </button>
+                    </div>
                     <div className="settings">
                         <button className="but_nav">
                             <img src={icon}/>
