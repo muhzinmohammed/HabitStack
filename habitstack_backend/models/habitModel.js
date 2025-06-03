@@ -4,6 +4,12 @@ const Schema = mongoose.Schema
 
 
 const habitSchema = new Schema({
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'User',
+        index:true
+    },
     category:{
         type:String,
         required:true,

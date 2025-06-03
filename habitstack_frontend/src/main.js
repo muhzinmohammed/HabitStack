@@ -1,7 +1,7 @@
 import './App.css';
 import Navbar from "./components/navbar.jsx";
 import Sidebar from "./components/sidebar.jsx";
-import Body from './components/body';
+import Body from './components/body.jsx';
 
 
 

@@ -1,12 +1,11 @@
 import { act } from 'react'
-import {createContext,useReducer, useState} from 'react'
+import {createContext,useReducer, useState, useEffect} from 'react'
 
 export const HabitContext = createContext()
 
 export const HabitReducer = (state,action) => {
     switch (action.type){
         case 'SET_HABITS':
-            console.log(action.payload)
             return {habits : action.payload}
         case 'CREATE_HABITS':
             return {habits: action.payload}
@@ -18,11 +17,22 @@ export const HabitReducer = (state,action) => {
 }
 
 export const HabitContextProvider = ({children}) => {
+
+    const token = localStorage.getItem('token');
     const [state,dispatch] = useReducer(HabitReducer,{habits:[]})
     const [current, setCurrent] = useState("Dashboard")
     const [isEdit, setIsEdit] = useState(false)
     const [editingCardId, setEditingCardId] = useState(null)
-    const [name,setName] = useState()
+    const [name, setName] = useState(() => {
+        return localStorage.getItem('name') || null;
+      });
+    useEffect(() => {
+        if (name) {
+          localStorage.setItem('name', name);
+        } else {
+          localStorage.removeItem('name');
+        }
+      }, [name]);
     return(
         <HabitContext.Provider value={
             {
@@ -35,7 +45,8 @@ export const HabitContextProvider = ({children}) => {
                 setEditingCardId,
                 editingCardId,
                 setName,
-                name
+                name,
+                token
             }}>
             {children}
         </HabitContext.Provider>

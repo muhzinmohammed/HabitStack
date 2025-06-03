@@ -9,7 +9,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 
 const Navbar = () =>{
 
-    const {setCurrent,dispatch} = useHabitContext()
+    const {setCurrent,dispatch,token} = useHabitContext()
     const[searchValue,setSearchValue] = useState("")
     const navigate = useNavigate()
     const handleLogout = () => {
@@ -23,7 +23,13 @@ const Navbar = () =>{
             if(searchValue !== ""){
                 url = "/habit/search/"+searchValue
             }
-            const response = await fetch(url)
+            const response = await fetch(url,{
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            })
             const json = await response.json()
             if (response.ok){
               dispatch({type:'SET_HABITS', payload: json})

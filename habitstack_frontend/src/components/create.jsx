@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState, useRef } from "react";
 import Dropdown from "./dropdown";
 import close from "./resource/close.svg"
 import { useHabitContext } from "../hooks/useHabitContext";
+
 
 const Create = ({onClose}) =>{
 
@@ -34,7 +35,11 @@ const Create = ({onClose}) =>{
         setIsEdit(true)
         onClose();
     }
-    const {dispatch,setCurrent,setIsEdit} = useHabitContext()
+
+    useEffect(() => {
+        setIsEdit(false)
+    },[]);
+    const {dispatch,setCurrent,setIsEdit,token} = useHabitContext()
     const [category, setCategory] = useState('')
     const [name, setName] = useState('')
     const [start, setStart] = useState('')
@@ -53,7 +58,6 @@ const Create = ({onClose}) =>{
         return date;
       }
       
-    setIsEdit(false)
     const handleDays = (e) => {
         const {name, checked} = e.target;
         setDay(prev => {
@@ -83,9 +87,11 @@ const Create = ({onClose}) =>{
             method:'POST',
             body:JSON.stringify(habit),
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Authorization': `Bearer ${token}`
             }
         })
+
         const json = await response.json()
         if (!response.ok)
         {
@@ -100,11 +106,10 @@ const Create = ({onClose}) =>{
             setError(null)
             handleClose()
             console.log("new habit added")
-            dispatch({type: 'CREATE_HABITS', payload: json})
+            dispatch({type: 'SET_HABITS', payload: json})
         }
         setCurrent('Dashboard')
     }
-
     return (
         <div
         ref={dragRef}

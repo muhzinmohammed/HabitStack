@@ -9,7 +9,7 @@ import { useHabitContext } from "../hooks/useHabitContext";
 
 const Cards = ({ index, ...props}) =>{
 
-    const {dispatch, setIsEdit, setEditingCardId} = useHabitContext()
+    const {dispatch, setIsEdit, setEditingCardId,token} = useHabitContext()
     const [category, setCategory] = useState(props.category)
     const [name, setName] = useState(props.name)
     const [start, setStart] = useState(props.start)
@@ -19,17 +19,6 @@ const Cards = ({ index, ...props}) =>{
     const daysofWeek = ['M','T','W','Th','F','S','Su'];
     const daysArray = props.days
 
-    const handleDelete = async () => {
-        const response = await fetch('/habit/'+props._id,{
-            method:'DELETE'
-        })
-        const json = await response.json()
-        if(response.ok)
-        {
-            console.log("habit deleted")
-            dispatch({type: 'DELETE_HABIT',payload: json})
-        }
-    }
 
     const handleEdit = () => {
         setEditingCardId(props._id)
@@ -59,6 +48,11 @@ const Cards = ({ index, ...props}) =>{
         return date;
       }
     
+    const formatTime12Hour = (timeStr) => {
+        const date = new Date(timeStr);
+        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+    
     const handleDone = async (e) => {
         e.preventDefault()
         let start_time = convertTimeToDate(start)
@@ -68,8 +62,10 @@ const Cards = ({ index, ...props}) =>{
             method:'POST',
             body:JSON.stringify(habit),
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Authorization': `Bearer ${token}`
             }
+
         })
 
         const json = await response.json()
@@ -88,8 +84,9 @@ const Cards = ({ index, ...props}) =>{
             method:'POST',
             body: JSON.stringify({ marked: !props.marked }),
             headers: {
-                'Content-Type':'application/json'
-            }
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+              }
         })
         const json = await response.json()
         if (response.ok)
@@ -98,10 +95,22 @@ const Cards = ({ index, ...props}) =>{
             }
     }
         
-    const formatTime12Hour = (timeStr) => {
-        const date = new Date(timeStr);
-        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const handleDelete = async () => {
+        const response = await fetch('/habit/'+props._id,{
+            method:'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+              }
+        })
+        const json = await response.json()
+        if(response.ok)
+        {
+            console.log("habit deleted")
+            dispatch({type: 'DELETE_HABIT',payload: json})
+        }
     }
+   
 
     return(
         <div className={`status ${props.isEditing ? 'editing' : ''}`} onDoubleClick={handleMarkAsDone} style={{ animationDelay: `${index * 0.1}s`}}>

@@ -6,11 +6,12 @@ import { useHabitContext } from '../hooks/useHabitContext';
 
 
 const Body = () => {
-    const {name,habits,dispatch,current,editingCardId} = useHabitContext()
+    const {name,habits,dispatch,current,editingCardId,token} = useHabitContext()
 
     useEffect(() => {
       const fetchHabits = async () => {
         let url = '/habit'
+        console.log(current)
         if (current === 'Dashboard'){
           url = `/habit/dashboard`
         }
@@ -20,9 +21,13 @@ const Body = () => {
         else if (current && current !== 'Dashboard' && current !== 'Marked' && current !== 'Habits'){
           url = `/habit/category?category=${current}`
         } 
-        console.log(url)
-        console.log(editingCardId)
-        const response = await fetch(url)
+        const response = await fetch(url,{
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        })
         const json = await response.json()
         
         if (response.ok){
@@ -31,24 +36,28 @@ const Body = () => {
       }
       fetchHabits();
     },[current,editingCardId,dispatch])
-    console.log(current)
     return(
       <div className="main">
         <div className='main_container' >
-          {current === 'Dashboard' && habits.length>0 && 
+          {current === 'Dashboard' && 
             (<div>
               <div className="welcome_container">
                 <div className="welcome">
                   <h2>Hi {name},</h2>
                   <h1>Welcome back to HabitStack.</h1>
                 </div>
-                <div className="streak"><h3>Habit Streak: <span>10</span>🔥</h3></div>
+                <div >
+                  <h3 className="streak">Habit Streak: <span>10🔥</span></h3>
+                </div>
               </div>
               <Analytics/>
-              <div className="welcome"><h2>Habits for the day...</h2></div>
+              {habits.length>0 && <div className="welcome"><h2>Habits for the day...</h2></div>}
             </div>)}
             <div className='container'>
-              {habits.length>0? (habits.map((habit, index) => {
+              {habits.length<=0 && current!="Dashboard"? 
+                <div className="empty_container">
+                  <h1>No habits yet</h1>
+                </div> : (habits.map((habit, index) => {
                 return(
                   <Cards 
                     key = {habit._id}
@@ -61,10 +70,7 @@ const Body = () => {
                     start_time = {habit.start} 
                     end_time = {habit.end} 
                     days = {habit.day}/>
-                )})): 
-                <div className="empty_container">
-                  <h1>No habits yet</h1>
-                </div> 
+                )}))
               }
             </div>
         </div>
