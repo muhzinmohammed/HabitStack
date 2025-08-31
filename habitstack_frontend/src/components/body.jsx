@@ -57,7 +57,11 @@ const Body = () => {
               {habits.length<=0 && current!="Dashboard"? 
                 <div className="empty_container">
                   <h1>No habits yet</h1>
-                </div> : (habits.map((habit, index) => {
+                </div> : (<div>
+                  <div className="welcome">
+                    <h2>{current=="Dashboard"? null:current}</h2>
+                  </div>
+                {habits.map((habit, index) => {
                 return(
                   <Cards 
                     key = {habit._id}
@@ -70,7 +74,8 @@ const Body = () => {
                     start_time = {habit.start} 
                     end_time = {habit.end} 
                     days = {habit.day}/>
-                )}))
+                )})}
+                </div>)
               }
             </div>
         </div>

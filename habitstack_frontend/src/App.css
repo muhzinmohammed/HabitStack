@@ -14,7 +14,11 @@
   grid-template-columns: auto 1fr;
   margin-left: 250px;
   min-height: 100vh;
-  background-color: #F5F7FA;
+  background-color: #ffffff;
+  background-image: 
+  linear-gradient(to right, rgb(238, 238, 238) 1px, transparent 1px),
+  linear-gradient(to bottom, lightgray 1px, transparent 1px);
+background-size: 60px 60px; /* spacing of the grid */
 }
 .navbar{
   background-color: #ffffff;
@@ -181,17 +185,25 @@ li{
   margin: 20px;
   height: 170px;
   width: 290px;
-  opacity: 0;
-  transform: translateX(300px);
-  animation: fadeIn 0.8s ease-out forwards;
+  opacity: 1;
+  transform: translateX(0);
   transition: background 0.3s ease, transform 0.3s ease;
+  display: block;
 }
 
 @keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(300px);
+  }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(0);
   }
+}
+
+.status {
+  animation: fadeIn 0.8s ease-out forwards;
 }
 .status:hover{
   background:rgb(255, 211, 15);
@@ -400,7 +412,7 @@ li{
 }
 .welcome h2{
   font-family: "Pt Serif", serif;
-  font-size: 30px;
+  font-size: 32px;
 }
 .streak{
   border: 1px solid rgb(151, 151, 255);
@@ -409,6 +421,7 @@ li{
   font-family: "Pt Serif", serif;
   margin-right: 20px;
   padding: 10px;
+  background-color: #f7f9fa;
 }
 .streak span{
   color:#0193b8
