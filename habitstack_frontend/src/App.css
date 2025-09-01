@@ -178,8 +178,10 @@ li{
 
 .status {
   all:unset;
-  background:linear-gradient(45deg,#4C49ED,#237bff,hsl(194, 82%, 48%));
-  color: #Ffffff;
+  background:rgb(70, 70, 70);
+  color: white;
+  border:1px solid rgba(63, 63, 63, 0.534);
+  /* color:  rgb(63, 63, 63); */
   border-radius: 15px;
   padding: 15px;
   margin: 20px;
@@ -206,7 +208,7 @@ li{
   animation: fadeIn 0.8s ease-out forwards;
 }
 .status:hover{
-  background:rgb(255, 211, 15);
+  background:rgb(41, 41, 41);
 }
 .status .alter{
   justify-content: center;
@@ -385,7 +387,7 @@ li{
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid white;
+  border: 1px solid  white;
   height: 30px;
   width: 30px;
   border-radius: 50%;
@@ -405,6 +407,7 @@ li{
 }
 .welcome{
   margin-left: 20px;
+  color: rgb(58, 58, 58);
 }
 .welcome h1{
   font-family: "Playfair Display", serif;
